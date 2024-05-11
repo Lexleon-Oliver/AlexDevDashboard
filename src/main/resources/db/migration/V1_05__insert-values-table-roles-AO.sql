@@ -1,2 +1,2 @@
-INSERT INTO tb_roles (name)
-VALUES ('ROLE_SUPPORT'), ('ROLE_ADMIN'), ('ROLE_MODERATOR'), ('ROLE_USER');
+INSERT INTO tb_roles (name, is_active)
+VALUES ('ROLE_SUPPORT', true), ('ROLE_ADMIN', true), ('ROLE_MODERATOR', true), ('ROLE_USER', true);

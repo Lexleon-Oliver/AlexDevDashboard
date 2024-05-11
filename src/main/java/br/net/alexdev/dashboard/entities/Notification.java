@@ -41,7 +41,9 @@ public class Notification {
 
     @NotBlank
     @Size(max = 20)
-    private String readAt;
+    private String readedAt;
+
+    private boolean isActive;
 
     public String getType() {
         return type.getType();
