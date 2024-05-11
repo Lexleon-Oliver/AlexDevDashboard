@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS "tb_usuarios" (
-	"id" bigint NOT NULL,
+	"id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL UNIQUE,
 	"username" text NOT NULL UNIQUE DEFAULT '30',
 	"password" text NOT NULL DEFAULT '120',
 	"email" text NOT NULL DEFAULT '50',
@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS "tb_usuarios" (
 );
 
 CREATE TABLE IF NOT EXISTS "tb_roles" (
-	"id" bigint NOT NULL,
-	"name" text,
+	"id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL UNIQUE,
+	"name" text NOT NULL,
 	PRIMARY KEY ("id")
 );
 
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS "tb_roles_usuarios" (
 );
 
 CREATE TABLE IF NOT EXISTS "tb_notificacoes" (
-	"id" bigint NOT NULL,
+	"id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL UNIQUE,
 	"user_id" bigint NOT NULL,
 	"type" text,
 	"title" text NOT NULL DEFAULT '100',
