@@ -93,7 +93,7 @@ public class AuthServiceImpl implements AuthService{
         usuario.setCompany("");
         usuario.setAbout("");
         usuario.setAddress("");
-        usuario.setAddress("");
+        usuario.setCity("");
         usuario.setPhone("");
         usuario.setHasNewNotifications(false);
         usuario.setActive(true);

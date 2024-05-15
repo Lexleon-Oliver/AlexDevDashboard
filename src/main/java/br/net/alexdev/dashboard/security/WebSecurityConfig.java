@@ -35,7 +35,8 @@ public class WebSecurityConfig {
 
     private RequestMatcher permitAllMatcher() {
         return new OrRequestMatcher(
-                new AntPathRequestMatcher("/auth/**")
+                new AntPathRequestMatcher("/auth/**"),
+                new AntPathRequestMatcher("/users/**")
 
         );
     }

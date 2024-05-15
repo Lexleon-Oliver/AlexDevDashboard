@@ -4,11 +4,13 @@ import br.net.alexdev.dashboard.enums.NotificationType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 @Table(name = "tb_notificacoes",
         uniqueConstraints = {
