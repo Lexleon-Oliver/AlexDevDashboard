@@ -2,6 +2,7 @@ package br.net.alexdev.dashboard.services;
 
 import br.net.alexdev.dashboard.dtos.requests.LoginDto;
 import br.net.alexdev.dashboard.dtos.requests.Register;
+import br.net.alexdev.dashboard.dtos.responses.ErrorMessageResponse;
 import br.net.alexdev.dashboard.dtos.responses.JwtResponse;
 import br.net.alexdev.dashboard.dtos.responses.MessageResponse;
 import br.net.alexdev.dashboard.entities.Role;
@@ -14,8 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,14 +58,11 @@ public class AuthServiceImpl implements AuthService{
             String jwt = jwtUtils.generateJwtToken(authentication);
             String refreshToken = jwtUtils.generateRefreshToken(authentication);
 
-//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-//        List<String> roles = userDetails.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .toList();
-
             return ResponseEntity.ok(new JwtResponse(jwt, refreshToken));
-        }catch (Exception e){
-            return ResponseEntity.badRequest().build();
+        }  catch (BadCredentialsException | DisabledException | LockedException e) {
+            throw e; // Rethrow the exception to be handled by the ErrorController
+        } catch (Exception e) {
+            throw new RuntimeException("Erro de autenticação", e);
         }
     }
 

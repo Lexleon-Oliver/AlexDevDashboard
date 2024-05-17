@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS "tb_usuarios" (
 	"about" text DEFAULT '1000',
 	"address" text DEFAULT '100',
 	"city" text DEFAULT '30',
+	"theme" text DEFAULT '30',
 	"phone" text DEFAULT '15',
 	"has_new_notifications" boolean NOT NULL,
 	"is_active" boolean NOT NULL,

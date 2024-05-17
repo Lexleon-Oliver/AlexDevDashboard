@@ -58,6 +58,9 @@ public class User {
     @Size(max = 15)
     private String phone;
 
+    @Size(max = 30)
+    private String theme;
+
     private boolean hasNewNotifications;
 
     private boolean isActive;

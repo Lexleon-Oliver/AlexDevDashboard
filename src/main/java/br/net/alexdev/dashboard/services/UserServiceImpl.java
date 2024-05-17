@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService{
                 userFound.getCity(),
                 userFound.getPhone(),
                 userFound.isHasNewNotifications(),
+                userFound.getTheme(),
                 rolesString,
                 myNotifications
         );

@@ -18,6 +18,7 @@ public record UserDto(
         @Size(max = 30) String city,
         @Size(max = 15) String phone,
         boolean hasNewNotifications,
+        @Size(max = 30) String theme,
         Set<String> roles,
         List<NotificationDto> notifications
 
