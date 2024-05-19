@@ -1,6 +1,7 @@
 package br.net.alexdev.dashboard.controllers;
 
 import br.net.alexdev.dashboard.dtos.requests.LoginDto;
+import br.net.alexdev.dashboard.dtos.requests.RefreshTokenDto;
 import br.net.alexdev.dashboard.dtos.requests.Register;
 import br.net.alexdev.dashboard.dtos.responses.JwtResponse;
 import br.net.alexdev.dashboard.dtos.responses.MessageResponse;
@@ -27,5 +28,11 @@ public class AuthController {
 //    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('SUPPORT')")
     public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody Register register) {
         return authService.registerUser(register);
+    }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<JwtResponse> refreshToken(@RequestBody RefreshTokenDto refreshToken){
+        System.out.println("[" + refreshToken + "]");
+        return authService.refreshToken(refreshToken);
     }
 }

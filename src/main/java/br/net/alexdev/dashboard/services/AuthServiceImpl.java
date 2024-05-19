@@ -1,6 +1,7 @@
 package br.net.alexdev.dashboard.services;
 
 import br.net.alexdev.dashboard.dtos.requests.LoginDto;
+import br.net.alexdev.dashboard.dtos.requests.RefreshTokenDto;
 import br.net.alexdev.dashboard.dtos.requests.Register;
 import br.net.alexdev.dashboard.dtos.responses.ErrorMessageResponse;
 import br.net.alexdev.dashboard.dtos.responses.JwtResponse;
@@ -10,7 +11,9 @@ import br.net.alexdev.dashboard.entities.User;
 import br.net.alexdev.dashboard.enums.ERole;
 import br.net.alexdev.dashboard.repositories.RoleRepository;
 import br.net.alexdev.dashboard.repositories.UserRepository;
+import br.net.alexdev.dashboard.security.UserDetailsImpl;
 import br.net.alexdev.dashboard.security.jwt.JwtUtils;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +71,23 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
+    public ResponseEntity<JwtResponse> refreshToken(RefreshTokenDto refreshToken) {
+        String jwt = refreshToken.token();
+        if (jwt != null && jwtUtils.validateJwtToken(jwt) ){
+            String username= jwtUtils.getUserNameFromJwtToken(jwt);
+            var foundedUser= userRepository.findByUsername(username);
+            User usuario = foundedUser.get();
+            UserDetails userDetails = UserDetailsImpl.build(usuario);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwtToken = jwtUtils.generateJwtToken(authentication);
+            String jwtRefreshToken = jwtUtils.generateRefreshToken(authentication);
+            return ResponseEntity.ok(new JwtResponse(jwtToken, jwtRefreshToken));
+        }
+        throw new RuntimeException("Erro ao gerar um novo token");
+    }
+
+    @Override
     public ResponseEntity<MessageResponse> registerUser(Register register) {
         if (userRepository.existsByUsername(register.username())) {
             return ResponseEntity
@@ -94,6 +115,7 @@ public class AuthServiceImpl implements AuthService{
         usuario.setPhone("");
         usuario.setHasNewNotifications(false);
         usuario.setActive(true);
+        usuario.setTheme("Claro");
 
         Set<Role> roles = defineUserRoles(register.roles());
         usuario.setRoles(roles);

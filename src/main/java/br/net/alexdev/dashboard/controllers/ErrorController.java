@@ -1,6 +1,7 @@
 package br.net.alexdev.dashboard.controllers;
 
 import br.net.alexdev.dashboard.dtos.responses.ErrorMessageResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,11 @@ public class ErrorController extends ResponseEntityExceptionHandler {
     public ErrorMessageResponse handleBadCredentialsException(BadCredentialsException e, WebRequest req) {
         return new ErrorMessageResponse("Não Autorizado", "Username e/ou senha inválidos", "BadCredentialsException", HttpStatus.UNAUTHORIZED.value());
     }
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorMessageResponse handleExpiredJwtException(ExpiredJwtException e, WebRequest req) {
+        return new ErrorMessageResponse("Não Autorizado", "Username e/ou senha inválidos", "BadCredentialsException", HttpStatus.UNAUTHORIZED.value());
+    }
 
     @ExceptionHandler(DisabledException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -36,8 +42,8 @@ public class ErrorController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorMessageResponse handleRuntimeException(RuntimeException e, WebRequest req) {
-        return new ErrorMessageResponse("Erro de autenticação", "Ocorreu um erro ao tentar autenticar. Por favor, tente novamente mais tarde.", "RuntimeException", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return new ErrorMessageResponse("Erro de autenticação", "Ocorreu um erro ao tentar autenticar. Por favor, tente novamente mais tarde.", "RuntimeException", HttpStatus.UNAUTHORIZED.value());
     }
 }
