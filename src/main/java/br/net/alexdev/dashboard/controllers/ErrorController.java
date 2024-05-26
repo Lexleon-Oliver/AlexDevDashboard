@@ -44,6 +44,6 @@ public class ErrorController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorMessageResponse handleRuntimeException(RuntimeException e, WebRequest req) {
-        return new ErrorMessageResponse("Erro de autenticação", "Ocorreu um erro ao tentar autenticar. Por favor, tente novamente mais tarde.", "RuntimeException", HttpStatus.UNAUTHORIZED.value());
+        return new ErrorMessageResponse("Erro de autenticação", "Ocorreu um erro ao tentar autenticar. Por favor, tente novamente mais tarde.", "AuthenticationException", HttpStatus.UNAUTHORIZED.value());
     }
 }

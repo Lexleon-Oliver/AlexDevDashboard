@@ -1,5 +1,7 @@
 package br.net.alexdev.dashboard.services;
 
+import br.net.alexdev.dashboard.dtos.requests.ThemeDto;
+import br.net.alexdev.dashboard.dtos.responses.MessageResponse;
 import br.net.alexdev.dashboard.dtos.responses.NotificationDto;
 import br.net.alexdev.dashboard.dtos.responses.UserDto;
 import br.net.alexdev.dashboard.entities.Notification;
@@ -63,6 +65,14 @@ public class UserServiceImpl implements UserService{
                 myNotifications
         );
         return ResponseEntity.status(HttpStatus.OK).body(userToReturn);
+    }
+
+    @Override
+    public ResponseEntity<MessageResponse> updateTheme(HttpServletRequest request, ThemeDto newTheme) {
+        var userFound = getUserModelByRequest(request);
+        userFound.setTheme(newTheme.theme());
+        userRepository.save(userFound);
+        return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("Tema atualizado com sucesso!"));
     }
 
 
