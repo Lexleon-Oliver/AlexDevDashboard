@@ -6,9 +6,12 @@ import br.net.alexdev.dashboard.dtos.requests.Register;
 import br.net.alexdev.dashboard.dtos.responses.ErrorMessageResponse;
 import br.net.alexdev.dashboard.dtos.responses.JwtResponse;
 import br.net.alexdev.dashboard.dtos.responses.MessageResponse;
+import br.net.alexdev.dashboard.entities.Notification;
 import br.net.alexdev.dashboard.entities.Role;
 import br.net.alexdev.dashboard.entities.User;
 import br.net.alexdev.dashboard.enums.ERole;
+import br.net.alexdev.dashboard.enums.NotificationType;
+import br.net.alexdev.dashboard.repositories.NotificationRepository;
 import br.net.alexdev.dashboard.repositories.RoleRepository;
 import br.net.alexdev.dashboard.repositories.UserRepository;
 import br.net.alexdev.dashboard.security.UserDetailsImpl;
@@ -25,6 +28,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +50,9 @@ public class AuthServiceImpl implements AuthService{
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    NotificationService notificationService;
 
     private static final Map<String, ERole> ROLE_MAP = Map.of(
             "admin", ERole.ROLE_ADMIN,
@@ -119,7 +127,8 @@ public class AuthServiceImpl implements AuthService{
 
         Set<Role> roles = defineUserRoles(register.roles());
         usuario.setRoles(roles);
-        userRepository.save(usuario);
+        User savedUser= userRepository.save(usuario);
+        notificationService.generateNotification(savedUser,NotificationType.SUCCESS,"Boas vindas","Bem-vindo(a) ao Dashboard Alexdev! Sua conta foi criada com sucesso!");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse("Usuario criado com sucesso!"));
 

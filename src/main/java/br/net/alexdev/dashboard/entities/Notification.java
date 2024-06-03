@@ -25,7 +25,6 @@ public class Notification {
     @ManyToOne
     private User user;
 
-    @Size(max =10)
     @Enumerated(EnumType.STRING)
     private NotificationType type;
 
@@ -41,7 +40,7 @@ public class Notification {
     @Size(max = 20)
     private String createdAt;
 
-    @NotBlank
+
     @Size(max = 20)
     private String readedAt;
 
@@ -53,5 +52,19 @@ public class Notification {
 
     public String getIcon() {
         return type.getIcon();
+    }
+
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "id=" + id +
+                ", user=" + (user!= null? user.toString() : "null") +
+                ", type=" + (type!= null? type.getType() : "null") +
+                ", title='" + title + '\'' +
+                ", message='" + message + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", readedAt='" + readedAt + '\'' +
+                ", isActive=" + isActive +
+                '}';
     }
 }

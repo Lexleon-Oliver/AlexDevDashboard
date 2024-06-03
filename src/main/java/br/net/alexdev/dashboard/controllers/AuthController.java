@@ -32,7 +32,6 @@ public class AuthController {
 
     @PostMapping("/refreshToken")
     public ResponseEntity<JwtResponse> refreshToken(@RequestBody RefreshTokenDto refreshToken){
-        System.out.println("[" + refreshToken + "]");
         return authService.refreshToken(refreshToken);
     }
 }

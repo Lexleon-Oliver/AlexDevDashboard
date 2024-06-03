@@ -2,6 +2,7 @@ package br.net.alexdev.dashboard.controllers;
 
 import br.net.alexdev.dashboard.dtos.requests.ThemeDto;
 import br.net.alexdev.dashboard.dtos.responses.MessageResponse;
+import br.net.alexdev.dashboard.dtos.responses.NotificationDto;
 import br.net.alexdev.dashboard.dtos.responses.UserDto;
 import br.net.alexdev.dashboard.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,5 +29,11 @@ public class UserController {
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('SUPPORT')")
     public ResponseEntity<MessageResponse> updateTheme(HttpServletRequest request, @RequestBody @Valid ThemeDto newTheme){
         return usuarioService.updateTheme(request, newTheme);
+    }
+
+    @PutMapping("/mydetails/notifications/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('SUPPORT')")
+    public ResponseEntity<MessageResponse> markNotificationAsRead(HttpServletRequest request,@PathVariable Long id, @RequestBody @Valid NotificationDto newNotification){
+        return usuarioService.markNotificationAsRead(request, id, newNotification);
     }
 }

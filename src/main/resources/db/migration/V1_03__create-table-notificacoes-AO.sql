@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS "tb_notificacoes" (
-	"id" bigint GENERATED ALWAYS AS IDENTITY NOT NULL UNIQUE,
-	"user_id" bigint NOT NULL,
-	"type" text,
-	"title" text NOT NULL DEFAULT '100',
-	"message" text NOT NULL DEFAULT '100',
-	"readed_at" text NOT NULL DEFAULT '20',
-	"created_at" text NOT NULL DEFAULT '20',
-	"is_active" boolean NOT NULL,
-	PRIMARY KEY ("id")
+    "id" BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    "user_id" BIGINT NOT NULL,
+    "type" VARCHAR(10) NOT NULL,
+    "title" VARCHAR(50) NOT NULL,
+    "message" VARCHAR(100) NOT NULL,
+    "created_at" VARCHAR(20) NOT NULL,
+    "readed_at" VARCHAR(20),
+    "is_active" BOOLEAN NOT NULL
 );
+

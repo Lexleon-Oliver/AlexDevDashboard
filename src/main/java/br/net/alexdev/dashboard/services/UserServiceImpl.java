@@ -75,6 +75,19 @@ public class UserServiceImpl implements UserService{
         return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("Tema atualizado com sucesso!"));
     }
 
+    @Override
+    public ResponseEntity<MessageResponse> markNotificationAsRead(HttpServletRequest request, Long id, NotificationDto newNotification) {
+        var notificationFound = notificationRepository.findById(id);
+        if (notificationFound.isEmpty()) {
+            throw new NotFoundException("Notificação informada não existe no banco de dados!");
+        }else {
+            Notification notificationToUpdate = notificationFound.get();
+            notificationToUpdate.setReadedAt(newNotification.readedAt());
+            notificationRepository.save(notificationToUpdate);
+            return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("Notificação marcada como lida com sucesso!"));
+        }
+    }
+
 
     public User getUserModelByRequest(HttpServletRequest request) {
         String jwt = tokenFilter.parseJwt(request);
